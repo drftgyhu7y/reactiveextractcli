@@ -1,40 +1,14 @@
-const strandSort = (arr) => {
-  const extract = (arr, x) => {
-    const extracted = [];
-    let i = 0;
-    while (i < arr.length) {
-      if (x.includes(arr[i])) {
-        extracted.push(arr.splice(i, 1)[0]);
-      } else {
-        i++;
+const shellSort = (arr) => {
+  const n = arr.length;
+  for (let gap = Math.floor(n / 2); gap > 0; gap = Math.floor(gap / 2)) {
+    for (let i = gap; i < n; i++) {
+      const temp = arr[i];
+      let j;
+      for (j = i; j >= gap && arr[j - gap] > temp; j -= gap) {
+        arr[j] = arr[j - gap];
       }
+      arr[j] = temp;
     }
-    return extracted;
-  };
-  const merge = (a, b) => {
-    const merged = [];
-    let i = 0;
-    let j = 0;
-    while (i < a.length && j < b.length) {
-      if (a[i] < b[j]) {
-        merged.push(a[i]);
-        i++;
-      } else {
-        merged.push(b[j]);
-        j++;
-      }
-    }
-    return merged.concat(i < a.length ? a.slice(i) : b.slice(j));
-  };
-  let sorted = [];
-  while (arr.length > 0) {
-    let sublist = [arr.shift()];
-    for (let i = 0; i < arr.length; i++) {
-      if (arr[i] > sublist[sublist.length - 1]) {
-        sublist.push(arr.splice(i, 1)[0]);
-      }
-    }
-    sorted = merge(sorted, sublist);
   }
-  return sorted;
+  return arr;
 };
