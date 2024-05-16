@@ -1,25 +1,16 @@
-const cocktailShakerSort = (arr) => {
-  let swapped = true;
-  let start = 0;
-  let end = arr.length - 1;
-  while (swapped) {
-    swapped = false;
-    for (let i = start; i < end; i++) {
-      if (arr[i] > arr[i + 1]) {
-        [arr[i], arr[i + 1]] = [arr[i + 1], arr[i]];
-        swapped = true;
-      }
+const radixSort = (arr) => {
+  const getDigit = (num, place) =>
+    Math.floor(Math.abs(num) / Math.pow(10, place)) % 10;
+  const digitCount = (num) =>
+    num === 0 ? 1 : Math.floor(Math.log10(Math.abs(num))) + 1;
+  const mostDigits = (arr) => Math.max(...arr.map((num) => digitCount(num)));
+  const maxDigits = mostDigits(arr);
+  for (let k = 0; k < maxDigits; k++) {
+    let digitBuckets = Array.from({ length: 10 }, () => []);
+    for (let i = 0; i < arr.length; i++) {
+      digitBuckets[getDigit(arr[i], k)].push(arr[i]);
     }
-    if (!swapped) break;
-    swapped = false;
-    end--;
-    for (let i = end - 1; i >= start; i--) {
-      if (arr[i] > arr[i + 1]) {
-        [arr[i], arr[i + 1]] = [arr[i + 1], arr[i]];
-        swapped = true;
-      }
-    }
-    start++;
+    arr = [].concat(...digitBuckets);
   }
   return arr;
 };
